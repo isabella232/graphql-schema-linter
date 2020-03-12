@@ -122,9 +122,10 @@ describe('Runner', () => {
 
       const expected =
         `${__dirname}/fixtures/schema.comment-descriptions.graphql\n` +
-        '3:3 The field `Query.a` is missing a description.  fields-have-descriptions\n' +
+        '3:3 The field `Query.a`s description is missing.                fields-have-descriptions\n' +
+        '6:3 The field `Query.b`s description should use triple-quotes.  fields-have-descriptions\n' +
         '\n' +
-        '✖ 1 error detected\n';
+        '✖ 2 errors detected\n';
 
       assert.equal(expected, stripAnsi(stdout));
     });
@@ -177,7 +178,7 @@ describe('Runner', () => {
 
       const expected =
         `${fixturePath}\n` +
-        '2:3 The field `Query.a` is missing a description.  fields-have-descriptions\n' +
+        '2:3 The field `Query.a`s description is missing.  fields-have-descriptions\n' +
         '\n' +
         '✖ 1 error detected\n';
 
@@ -244,7 +245,7 @@ describe('Runner', () => {
       assert.deepEqual(
         [
           {
-            message: 'The field `Query.a` is missing a description.',
+            message: 'The field `Query.a`s description is missing.',
             location: { column: 3, line: 2, file: fixturePath },
             rule: 'fields-have-descriptions',
           },
@@ -329,7 +330,7 @@ describe('Runner', () => {
       assert.equal(6, errors.length);
 
       assert.equal(
-        'The field `Query.something` is missing a description.',
+        'The field `Query.something`s description is missing.',
         errors[0].message
       );
       assert.equal(2, errors[0].location.line);
@@ -340,7 +341,7 @@ describe('Runner', () => {
       assert.equal(errors[0].rule, 'fields-have-descriptions');
 
       assert.equal(
-        'The field `User.username` is missing a description.',
+        'The field `User.username`s description is missing.',
         errors[1].message
       );
       assert.equal(2, errors[1].location.line);
@@ -351,7 +352,7 @@ describe('Runner', () => {
       assert.equal(errors[1].rule, 'fields-have-descriptions');
 
       assert.equal(
-        'The field `User.email` is missing a description.',
+        'The field `User.email`s description is missing.',
         errors[2].message
       );
       assert.equal(3, errors[2].location.line);
@@ -362,7 +363,7 @@ describe('Runner', () => {
       assert.equal(errors[2].rule, 'fields-have-descriptions');
 
       assert.equal(
-        'The field `Query.viewer` is missing a description.',
+        'The field `Query.viewer`s description is missing.',
         errors[3].message
       );
       assert.equal(7, errors[3].location.line);
@@ -373,7 +374,7 @@ describe('Runner', () => {
       assert.equal(errors[3].rule, 'fields-have-descriptions');
 
       assert.equal(
-        'The field `Comment.body` is missing a description.',
+        'The field `Comment.body`s description is missing.',
         errors[4].message
       );
       assert.equal(2, errors[4].location.line);
@@ -384,7 +385,7 @@ describe('Runner', () => {
       assert.equal(errors[4].rule, 'fields-have-descriptions');
 
       assert.equal(
-        'The field `Comment.author` is missing a description.',
+        'The field `Comment.author`s description is missing.',
         errors[5].message
       );
       assert.equal(3, errors[5].location.line);

@@ -15,7 +15,7 @@ function validateTypeHasDescription(configuration, context, node, typeKind) {
   context.reportError(
     new ValidationError(
       'types-have-descriptions',
-      `The ${typeKind} type \`${interfaceTypeName}\` is missing a description.`,
+      `The ${typeKind} type \`${interfaceTypeName}\`s description is missing.`,
       [node]
     )
   );

@@ -23,7 +23,7 @@ describe('TypesHaveDescriptions rule', () => {
     `,
       [
         {
-          message: 'The enum type `STATUS` is missing a description.',
+          message: 'The enum type `STATUS`s description is missing.',
           locations: [{ line: 7, column: 7 }],
         },
       ]
@@ -41,7 +41,7 @@ describe('TypesHaveDescriptions rule', () => {
     `,
       [
         {
-          message: 'The scalar type `DateTime` is missing a description.',
+          message: 'The scalar type `DateTime`s description is missing.',
           locations: [{ line: 5, column: 7 }],
         },
       ]
@@ -63,7 +63,7 @@ describe('TypesHaveDescriptions rule', () => {
     `,
       [
         {
-          message: 'The object type `A` is missing a description.',
+          message: 'The object type `A`s description is missing.',
           locations: [{ line: 2, column: 7 }],
         },
       ]
@@ -85,7 +85,7 @@ describe('TypesHaveDescriptions rule', () => {
     `,
       [
         {
-          message: 'The input object type `AddStar` is missing a description.',
+          message: 'The input object type `AddStar`s description is missing.',
           locations: [{ line: 2, column: 7 }],
         },
       ]
@@ -107,7 +107,7 @@ describe('TypesHaveDescriptions rule', () => {
     `,
       [
         {
-          message: 'The interface type `A` is missing a description.',
+          message: 'The interface type `A`s description is missing.',
           locations: [{ line: 7, column: 7 }],
         },
       ]
@@ -135,7 +135,7 @@ describe('TypesHaveDescriptions rule', () => {
     `,
       [
         {
-          message: 'The union type `AB` is missing a description.',
+          message: 'The union type `AB`s description is missing.',
           locations: [{ line: 12, column: 7 }],
         },
       ]

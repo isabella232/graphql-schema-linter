@@ -24,7 +24,7 @@ export function InputObjectValuesHaveDescriptions(configuration, context) {
       context.reportError(
         new ValidationError(
           'input-object-values-have-descriptions',
-          `The input value \`${inputObjectName}.${inputValueName}\` is missing a description.`,
+          `The input value \`${inputObjectName}.${inputValueName}\`s description is missing.`,
           [node]
         )
       );

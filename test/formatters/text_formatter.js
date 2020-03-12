@@ -45,7 +45,7 @@ describe('TextFormatter', () => {
 
       'schema/user.graphql': [
         {
-          message: 'The field `User.email` is missing a description.',
+          message: 'The field `User.email`s description is missing.',
           locations: [{ line: 3, column: 3 }],
           ruleName: 'fields-have-descriptions',
         },
@@ -58,7 +58,7 @@ describe('TextFormatter', () => {
       '4:20 The field `Query.users` is deprecated but has no deprecation reason.  deprecations-have-a-reason\n' +
       '\n' +
       'schema/user.graphql\n' +
-      '3:3 The field `User.email` is missing a description.  fields-have-descriptions\n' +
+      '3:3 The field `User.email`s description is missing.  fields-have-descriptions\n' +
       '\n' +
       `${figures.cross} 2 errors detected\n`;
 

@@ -1,17 +1,17 @@
 "Query"
 type Query {
-  "a"
+  """a"""
   a: String!
 
-  "something"
+  """something"""
   something: PageInfo!
 }
 
-"PageInfo"
+"""PageInfo"""
 type PageInfo {
-  "hasNextPage"
+  """hasNextPage"""
   hasNextPage: Boolean!
 
-  "hasPreviousPage"
+  """hasPreviousPage"""
   hasPreviousPage: Boolean!
 }

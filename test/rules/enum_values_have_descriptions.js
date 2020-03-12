@@ -20,12 +20,11 @@ describe('EnumValuesHaveDescriptions rule', () => {
     `,
       [
         {
-          message: 'The enum value `Status.DRAFT` is missing a description.',
+          message: 'The enum value `Status.DRAFT`s description is missing.',
           locations: [{ line: 3, column: 9 }],
         },
         {
-          message:
-            'The enum value `Status.PUBLISHED` is missing a description.',
+          message: 'The enum value `Status.PUBLISHED`s description is missing.',
           locations: [{ line: 8, column: 9 }],
         },
       ]

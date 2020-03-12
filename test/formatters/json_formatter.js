@@ -15,7 +15,7 @@ describe('JSONFormatter', () => {
 
       'schema/user.graphql': [
         {
-          message: 'The field `User.email` is missing a description.',
+          message: 'The field `User.email`s description is missing.',
           locations: [{ line: 3, column: 3 }],
           ruleName: 'fields-have-descriptions',
         },
@@ -37,7 +37,7 @@ describe('JSONFormatter', () => {
             rule: 'deprecations-have-a-reason',
           },
           {
-            message: 'The field `User.email` is missing a description.',
+            message: 'The field `User.email`s description is missing.',
             location: {
               line: 3,
               column: 3,

@@ -24,7 +24,7 @@ describe('InputObjectValuesHaveDescriptions rule', () => {
     `,
       [
         {
-          message: 'The input value `User.username` is missing a description.',
+          message: 'The input value `User.username`s description is missing.',
           locations: [{ line: 3, column: 9 }],
         },
       ]

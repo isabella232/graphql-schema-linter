@@ -18,7 +18,7 @@ export function EnumValuesHaveDescriptions(configuration, context) {
       context.reportError(
         new ValidationError(
           'enum-values-have-descriptions',
-          `The enum value \`${parentName}.${enumValue}\` is missing a description.`,
+          `The enum value \`${parentName}.${enumValue}\`s description is missing.`,
           [node]
         )
       );
