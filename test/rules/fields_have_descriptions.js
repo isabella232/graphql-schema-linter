@@ -79,6 +79,11 @@ describe('FieldsHaveDescriptions rule', () => {
             'The field `A.single`s description should use triple-quotes.',
           locations: [{ line: 3, column: 9 }],
         },
+        {
+          message:
+            'The field `A.single`s description should use triple-quotes.',
+          locations: [{ line: 3, column: 40 }],
+        },
       ]
     );
   });
@@ -91,6 +96,9 @@ describe('FieldsHaveDescriptions rule', () => {
         """Description.
 
         Description has a blank line.
+        
+        And then it has another one!
+        For shame.
         """
         withDescription: String
       }
@@ -99,7 +107,12 @@ describe('FieldsHaveDescriptions rule', () => {
         {
           message:
             'The field `A.withDescription`s description should not include a blank line.',
-          locations: [{ line: 3, column: 9 }],
+          locations: [{ line: 4, column: 1 }],
+        },
+        {
+          message:
+            'The field `A.withDescription`s description should not include a blank line.',
+          locations: [{ line: 6, column: 1 }],
         },
       ]
     );
@@ -140,7 +153,7 @@ describe('FieldsHaveDescriptions rule', () => {
         {
           message:
             'The field `A.singleLine2`s description should not put the trailing triple-quote on its own line.',
-          locations: [{ line: 7, column: 9 }],
+          locations: [{ line: 9, column: 9 }],
         },
         {
           message:
@@ -169,12 +182,12 @@ describe('FieldsHaveDescriptions rule', () => {
         {
           message:
             'The field `A.singleLine`s description should not put the trailing triple-quote on its own line.',
-          locations: [{ line: 3, column: 9 }],
+          locations: [{ line: 4, column: 9 }],
         },
         {
           message:
             'The field `A.multiLine`s description should put the trailing triple-quote on its own line.',
-          locations: [{ line: 7, column: 9 }],
+          locations: [{ line: 8, column: 25 }],
         },
       ]
     );

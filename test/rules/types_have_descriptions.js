@@ -235,6 +235,10 @@ describe('TypesHaveDescriptions rule', () => {
           locations: [{ line: 2, column: 7 }],
         },
         {
+          message: 'The object type `A`s description should use triple-quotes.',
+          locations: [{ line: 2, column: 38 }],
+        },
+        {
           message:
             'The object type `A`s description should put the leading triple-quote on its own line.',
           locations: [{ line: 2, column: 7 }],
@@ -242,7 +246,7 @@ describe('TypesHaveDescriptions rule', () => {
         {
           message:
             'The object type `A`s description should put the trailing triple-quote on its own line.',
-          locations: [{ line: 2, column: 7 }],
+          locations: [{ line: 2, column: 36 }],
         },
       ]
     );
@@ -340,7 +344,7 @@ describe('TypesHaveDescriptions rule', () => {
         {
           message:
             'The object type `A`s description should put the trailing triple-quote on its own line.',
-          locations: [{ line: 2, column: 7 }],
+          locations: [{ line: 3, column: 45 }],
         },
         {
           message:
@@ -350,7 +354,7 @@ describe('TypesHaveDescriptions rule', () => {
         {
           message:
             'The object type `B`s description should put the trailing triple-quote on its own line.',
-          locations: [{ line: 8, column: 7 }],
+          locations: [{ line: 8, column: 31 }],
         },
       ]
     );

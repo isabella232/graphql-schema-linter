@@ -2,6 +2,7 @@ import { getDescription } from 'graphql/utilities/buildASTSchema';
 import { ValidationError } from '../validation_error';
 import {
   fullDescription,
+  offsetLocation,
   blankLineBeforeNode,
   descriptionIsOneLine,
   leadingQuotesAreTripleQuote,
@@ -9,8 +10,16 @@ import {
   trailingQuotesOnTheirOwnLine,
 } from './description_util.js';
 
-function descriptionHasBlankLine(description) {
-  return description.match(/\n\s*\n/);
+function offsetsOfBlankLinesInDescription(descriptionWithQuotes) {
+  const retval = [];
+  const blankLineRegexp = new RegExp('\\n\\s*\\n', 'g');
+  let m;
+  while ((m = blankLineRegexp.exec(descriptionWithQuotes))) {
+    // We map to index + 1 to indicate where the blank line begins
+    // (not the newline before it).
+    retval.push(m.index + 1);
+  }
+  return retval;
 }
 
 // Find the interface type with the given name.  There's probably
@@ -49,7 +58,7 @@ function interfaceFieldsFor(node, ancestors) {
   return retval;
 }
 
-function reportError(error, context, node, ancestors) {
+function reportError(error, context, node, ancestors, offset) {
   const fieldName = node.name.value;
   const parentName = ancestors[ancestors.length - 1].name.value;
 
@@ -57,7 +66,8 @@ function reportError(error, context, node, ancestors) {
     new ValidationError(
       'fields-have-descriptions',
       `The field \`${parentName}.${fieldName}\`s description ${error}.`,
-      [node]
+      [node],
+      offsetLocation(node, offset)
     )
   );
 }
@@ -99,24 +109,36 @@ export function FieldsHaveDescriptions(configuration, context) {
       }
 
       if (!leadingQuotesAreTripleQuote(descriptionWithQuotes)) {
-        reportError('should use triple-quotes', context, node, ancestors);
+        if (descriptionWithQuotes[0] === '"') {
+          // offset == 0 matches the open single-quote.
+          reportError('should use triple-quotes', context, node, ancestors, 0);
+          // If the open-quote is a single quote, the end-quote must
+          // be too.  We report both for the benefit of auto-fixing.
+          reportError('should use triple-quotes', context, node, ancestors, -1);
+        } else {
+          // offset == 0 matches the `#`.
+          reportError('should use triple-quotes', context, node, ancestors, 0);
+        }
       }
 
-      if (descriptionHasBlankLine(description)) {
+      offsetsOfBlankLinesInDescription(descriptionWithQuotes).forEach(offset =>
         reportError(
           'should not include a blank line',
           context,
           node,
-          ancestors
-        );
-      }
+          ancestors,
+          offset
+        )
+      );
 
       if (leadingQuotesOnTheirOwnLine(descriptionWithQuotes)) {
+        // Offset of 0 here matches the triple-quote location.
         reportError(
           'should not put the leading triple-quote on its own line',
           context,
           node,
-          ancestors
+          ancestors,
+          0
         );
       }
 
@@ -124,22 +146,26 @@ export function FieldsHaveDescriptions(configuration, context) {
         descriptionIsOneLine(description) &&
         trailingQuotesOnTheirOwnLine(descriptionWithQuotes)
       ) {
+        // Offset of -3 matches the triple-quote location.
         reportError(
           'should not put the trailing triple-quote on its own line',
           context,
           node,
-          ancestors
+          ancestors,
+          -3
         );
       }
       if (
         !descriptionIsOneLine(description) &&
         !trailingQuotesOnTheirOwnLine(descriptionWithQuotes)
       ) {
+        // Offset of -3 matches the triple-quote location.
         reportError(
           'should put the trailing triple-quote on its own line',
           context,
           node,
-          ancestors
+          ancestors,
+          -3
         );
       }
     },

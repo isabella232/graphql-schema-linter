@@ -2,6 +2,7 @@ import { getDescription } from 'graphql/utilities/buildASTSchema';
 import { ValidationError } from '../validation_error';
 import {
   fullDescription,
+  offsetLocation,
   blankLineBeforeNode,
   leadingQuotesAreTripleQuote,
   leadingQuotesOnTheirOwnLine,
@@ -12,14 +13,15 @@ function descriptionHasValidFirstline(description) {
   return description.match(/^[^\n]+(\n\n|$)/);
 }
 
-function reportError(error, context, node, typeKind) {
+function reportError(error, context, node, typeKind, offset) {
   const interfaceTypeName = node.name.value;
 
   context.reportError(
     new ValidationError(
       'types-have-descriptions',
       `The ${typeKind} type \`${interfaceTypeName}\`s description ${error}.`,
-      [node]
+      [node],
+      offsetLocation(node, offset)
     )
   );
 }
@@ -49,24 +51,37 @@ function validateTypeHasDescription(configuration, context, node, typeKind) {
   }
 
   if (!leadingQuotesAreTripleQuote(descriptionWithQuotes)) {
-    reportError('should use triple-quotes', context, node, typeKind);
+    if (descriptionWithQuotes[0] === '"') {
+      // offset == 0 matches the open single-quote.
+      reportError('should use triple-quotes', context, node, typeKind, 0);
+      // If the open-quote is a single quote, the end-quote must
+      // be too.  We report both for the benefit of auto-fixing.
+      reportError('should use triple-quotes', context, node, typeKind, -1);
+    } else {
+      // offset == 0 matches the `#`.
+      reportError('should use triple-quotes', context, node, typeKind, 0);
+    }
   }
 
   if (!leadingQuotesOnTheirOwnLine(descriptionWithQuotes)) {
+    // Offset of 0 here matches the triple-quote location.
     reportError(
       'should put the leading triple-quote on its own line',
       context,
       node,
-      typeKind
+      typeKind,
+      0
     );
   }
 
   if (!trailingQuotesOnTheirOwnLine(descriptionWithQuotes)) {
+    // Offset of -3 matches the triple-quote location.
     reportError(
       'should put the trailing triple-quote on its own line',
       context,
       node,
-      typeKind
+      typeKind,
+      -3
     );
   }
 }
