@@ -6,7 +6,9 @@ import { validateSchemaDefinition } from '../src/validator.js';
 import { Configuration } from '../src/configuration.js';
 
 const DefaultSchema = `
-  """Query root"""
+  """
+  Query root
+  """
   type Query {
     """Field"""
     a: String

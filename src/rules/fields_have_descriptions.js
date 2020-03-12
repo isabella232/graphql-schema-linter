@@ -1,42 +1,16 @@
 import { getDescription } from 'graphql/utilities/buildASTSchema';
 import { ValidationError } from '../validation_error';
-
-function fullDescription(node) {
-  // While the sdl parser exposes node.description, it sadly elides
-  // leading and trailing newlines.  So I look at the source to get
-  // my own version (which includes leading and trailing quotes).
-  // This is hacky!
-  // TODO(csilvers): figure out what source.locationOffset is.
-  for (
-    let token = node.loc.startToken;
-    token != node.loc.endToken;
-    token = token.next
-  ) {
-    if (token.kind === 'BlockString') {
-      return node.loc.source.body.substring(token.start, token.end);
-    }
-  }
-  return '';
-}
+import {
+  fullDescription,
+  blankLineBeforeNode,
+  descriptionIsOneLine,
+  leadingQuotesAreTripleQuote,
+  leadingQuotesOnTheirOwnLine,
+  trailingQuotesOnTheirOwnLine,
+} from './description_util.js';
 
 function descriptionHasBlankLine(description) {
   return description.match(/\n\s*\n/);
-}
-
-function descriptionIsOneLine(description) {
-  return description.indexOf('\n') === -1;
-}
-
-function leadingQuotesAreTripleQuote(descriptionWithQuotes) {
-  return !!descriptionWithQuotes.match(/^"""/);
-}
-
-function leadingQuotesOnTheirOwnLine(descriptionWithQuotes) {
-  return !!descriptionWithQuotes.match(/^"""\n/);
-}
-
-function trailingQuotesOnTheirOwnLine(descriptionWithQuotes) {
-  return !!descriptionWithQuotes.match(/\n\s*"""$/);
 }
 
 // Find the interface type with the given name.  There's probably
@@ -73,20 +47,6 @@ function interfaceFieldsFor(node, ancestors) {
     )
   );
   return retval;
-}
-
-// True if the field-definition has a blank line before it, or a line
-// ending in `{`.
-function blankLineBeforeField(node) {
-  let prevToken = node.loc.startToken.prev;
-  while (prevToken && prevToken.kind === 'Comment') {
-    prevToken = prevToken.prev;
-  }
-  return (
-    !prevToken ||
-    prevToken.line < prevToken.next.line - 1 ||
-    prevToken.kind === '{'
-  );
 }
 
 function reportError(error, context, node, ancestors) {
@@ -129,7 +89,7 @@ export function FieldsHaveDescriptions(configuration, context) {
 
       const descriptionWithQuotes = fullDescription(node);
 
-      if (!blankLineBeforeField(node)) {
+      if (!blankLineBeforeNode(node)) {
         reportError(
           'should have a blank line before it',
           context,
