@@ -36,7 +36,6 @@ function validateTypeHasDescription(configuration, context, node, typeKind) {
   const descriptionWithQuotes = fullDescription(node);
 
   if (!blankLineBeforeNode(node)) {
-    debugger; //!!
     reportError('should have a blank line before it', context, node, typeKind);
   }
 
