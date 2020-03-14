@@ -41,7 +41,7 @@ function interfaceFieldsFor(node, ancestors) {
   const type = ancestors[ancestors.length - 1];
   // For each interface listed on this type, we find the definition
   // of that interface, then add all its fields to retval.
-  type.interfaces.forEach(i =>
+  (type.interfaces || []).forEach(i =>
     findInterface(ancestors, i.name.value).fields.forEach(
       f => (retval[f.name.value] = 1)
     )
