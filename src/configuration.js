@@ -140,7 +140,9 @@ export class Configuration {
 
     expandedPaths.map(rulePath => {
       let ruleMap = require(rulePath);
-      Object.keys(ruleMap).forEach(k => rules.add(ruleMap[k]));
+      Object.keys(ruleMap)
+        .filter(k => k.match(/^[A-Z]/))
+        .forEach(k => rules.add(ruleMap[k]));
     });
 
     return Array.from(rules);
